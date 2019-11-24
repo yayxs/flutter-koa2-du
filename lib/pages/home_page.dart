@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lsolated_island_app/utils/global.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -20,13 +21,12 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Container(
-        height: ScreenUtil.getInstance().setHeight(1334),
-        width: ScreenUtil.getInstance().setWidth(750),
-        child: Image.network(
-          'https://i.demo-1s.com/2019/11/16/yjhPSQWjuqPmosIL.jpg',
-          fit: BoxFit.cover,
+          child: Center(
+        child: Text(
+          '这是一段测试文字,用来测试公共的字体大小变量',
+          style: TextStyle(fontSize: fontSize24),
         ),
-      ),
+      )),
     );
   }
 }

@@ -15,7 +15,7 @@ class _LovePageState extends State<LovePage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          '喜欢',
+          'Ctrl+s 保存就能更新视图',
           style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(36)),
         ),
       ),

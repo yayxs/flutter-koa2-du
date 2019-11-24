@@ -30,6 +30,7 @@ dependencies:
   dio_cookie_manager: ^1.0.0
   cookie_jar: ^1.0.1
   extended_image: ^0.6.5
+  intro_views_flutter: ^2.8.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -53,6 +54,10 @@ flutter:
     - images/bottom_nav/home@light.png
     - images/bottom_nav/book_list@light.png
     - images/bottom_nav/love@light.png
+    - images/splash_screen.jpg
+    - images/jiche.jpg
+    - images/miaosu.jpg
+    - images/nidename.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

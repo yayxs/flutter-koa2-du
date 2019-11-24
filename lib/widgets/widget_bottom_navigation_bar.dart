@@ -6,6 +6,7 @@ import '../pages/home_page.dart';
 import '../pages/book_list_page.dart';
 import '../pages/love_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../utils/global.dart';
 
 /// 在这里我们生命一个有状态的部件，因为其中会牵扯到index的改变
 class BottomNavBarWidget extends StatefulWidget {
@@ -52,15 +53,13 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget>
           items: <Widget>[
             Image.asset(
               'images/bottom_nav/home@light.png',
-              width: ScreenUtil.getInstance().setWidth(100),
-              height: ScreenUtil.getInstance().setHeight(100),
+              width: width100,
+              height: height100,
             ),
             Image.asset('images/bottom_nav/book_list@light.png',
-                width: ScreenUtil.getInstance().setWidth(100),
-                height: ScreenUtil.getInstance().setHeight(100)),
+                width: width100, height: height100),
             Image.asset('images/bottom_nav/love@light.png',
-                width: ScreenUtil.getInstance().setWidth(100),
-                height: ScreenUtil.getInstance().setHeight(100)),
+                width: width100, height: height100),
           ],
 
           /// 点击不同的底部导航
