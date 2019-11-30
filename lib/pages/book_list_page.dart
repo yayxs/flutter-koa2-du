@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../widgets/widget_search_bar.dart';
+import '../utils/my_http.dart';
 
 class BookListPage extends StatefulWidget {
   BookListPage({Key key}) : super(key: key);
@@ -9,6 +11,12 @@ class BookListPage extends StatefulWidget {
 }
 
 class _BookListPageState extends State<BookListPage> {
+  @override
+  void initState() {
+    getHttp();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +28,7 @@ class _BookListPageState extends State<BookListPage> {
         ),
       ),
       body: Container(
-        height: ScreenUtil.getInstance().setHeight(1334),
-        width: ScreenUtil.getInstance().setWidth(750),
-        child: Image.network(
-          'https://i.demo-1s.com/2019/11/16/nOJtwvrfpndeATDa.jpg',
-          fit: BoxFit.cover,
-        ),
+        child: WidgetSearchBar(),
       ),
     );
   }

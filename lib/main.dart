@@ -4,7 +4,22 @@ import './widgets/widget_bottom_navigation_bar.dart';
 import './pages/splash_screen_page.dart';
 import './pages/guide_pages.dart';
 
-void main() => runApp(MyApp());
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
+// 兼容异常处理
+void enablePlatformOverrideForDesktop() {
+  if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  }
+}
+
+void main() {
+  enablePlatformOverrideForDesktop();
+  runApp(MyApp());
+}
 
 // 这里我们用StatelessWidget，我是一个没有状态的"孩子"
 class MyApp extends StatelessWidget {
