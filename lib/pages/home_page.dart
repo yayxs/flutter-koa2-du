@@ -13,20 +13,37 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          '首页',
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(36)),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            '流行',
+            style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(36)),
+          ),
         ),
-      ),
-      body: Container(
-          child: Center(
-        child: Text(
-          '这是一段测试文字,用来测试公共的字体大小变量',
-          style: TextStyle(fontSize: fontSize24),
-        ),
-      )),
-    );
+        body: SingleChildScrollView(
+          child: Flex(
+            direction: Axis.vertical,
+            children: <Widget>[
+              Container(
+                child: _like(),
+              )
+            ],
+          ),
+        ));
   }
+
+  // 点赞 第一行
+  Widget _like() => Container(
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: width750,
+              height: height100,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.red)),
+              child: Text('头部'),
+            )
+          ],
+        ),
+      );
 }
