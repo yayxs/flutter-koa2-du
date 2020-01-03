@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lsolated_island_app/utils/global.dart';
+import '../widgets/widget_like.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -38,10 +39,9 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Container(
               width: width750,
-              height: height100,
               decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.red)),
-              child: Text('头部'),
+              child: WidgetLike(),
             )
           ],
         ),
