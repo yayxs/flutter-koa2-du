@@ -1,5 +1,5 @@
-const Koa = require('koa');
+const Koa = require("koa");
 const app = new Koa();
-
-console.log(`test`)
-// app.listen(8000)
+const Init = require('./core/init')
+Init.entrance(app)
+app.listen(3000);

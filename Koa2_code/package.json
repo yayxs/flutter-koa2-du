@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/yayxs/Flutter-Koa2-DU#readme",
   "dependencies": {
-    "@koa/router": "^8.0.8",
-    "koa": "^2.11.0"
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8",
+    "require-directory": "^2.1.1"
   }
 }
