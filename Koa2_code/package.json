@@ -2,7 +2,7 @@
   "name": "yayxs",
   "version": "1.0.0",
   "description": "A project that provides interface APIs for the \"Solo\" app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/yayxs/Flutter-Koa2-DU#readme",
   "dependencies": {
+    "@koa/router": "^8.0.8",
     "koa": "^2.11.0"
   }
 }
