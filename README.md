@@ -1,27 +1,53 @@
 ## 介绍
 
+**《孤岛 app》已经停止维护，全面升级为《独 °》**
+
 ### 功能
-
-由于平常不太乐于把自己的想法发表在`大众化的社交平台`，故因此自我开发一`APP`。
-
-- 能够跨端实现相似效果（Android、Ios）
-- 实现`想法`，`生活`的记录
-- 大致包括：文字、图片、小视频的发布，以及`个人中心`等模块
-
-### 前期须知
-
-这个项目是基于`孤岛」APP`的重新开发，并更换名称`《DU》` ，中文名字《独°》意为`浩瀚宇宙，谁不孤独`,会继续在原有基础开发，并利用`Koa2`开发属于自己的`api` 接口服务
-
-- 客户端：Flutter
-- 服务端：Koa2
 
 ### 目录结构
 
 ```sh
-
+├─android
+│  ├─app
+│  │  └─src
+│  │      ├─debug
+│  │      ├─main
+│  │      │  ├─kotlin
+│  │      │  │  └─com
+│  │      │  │      └─example
+│  │      │  │          └─flutter_island_app
+│  │      │  └─res
+│  │      │      ├─drawable
+│  │      │      ├─mipmap-hdpi
+│  │      │      ├─mipmap-mdpi
+│  │      │      ├─mipmap-xhdpi
+│  │      │      ├─mipmap-xxhdpi
+│  │      │      ├─mipmap-xxxhdpi
+│  │      │      └─values
+│  │      └─profile
+│  └─gradle
+│      └─wrapper
+├─images
+│  └─bottom_nav
+├─ios
+│  ├─Flutter
+│  ├─Runner
+│  │  ├─Assets.xcassets
+│  │  │  ├─AppIcon.appiconset
+│  │  │  └─LaunchImage.imageset
+│  │  └─Base.lproj
+│  ├─Runner.xcodeproj
+│  │  ├─project.xcworkspace
+│  │  └─xcshareddata
+│  │      └─xcschemes
+│  └─Runner.xcworkspace
+├─lib
+│  ├─pages
+│  ├─routes
+│  ├─utils
+│  └─widgets
+└─test
 ```
-
-
 
 #### 配套文章
 
