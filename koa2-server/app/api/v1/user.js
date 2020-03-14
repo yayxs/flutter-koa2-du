@@ -3,8 +3,7 @@ const Router = require('koa-router');
 
 const router = new Router();
 
-router.get(`/v1/my/userInfo`, (ctx, next) => {
-  console.log(`/v1/my/userInfo执行`)
+router.get(`/api/v1/user`, (ctx, next) => {
   ctx.body = {
     code: 0
   };
