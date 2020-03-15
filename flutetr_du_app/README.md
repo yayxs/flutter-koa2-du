@@ -417,15 +417,15 @@ curl http://127.0.0.1:3000/api/v1/user
 
 #### Nginx 反向代理
 
-是这样的，我们考虑一下，接口访问的时候怎么才优雅，也不知道端口是3000啊，所以需要`一个代理服务器`
+是这样的，我们考虑一下，接口访问的时候怎么才优雅，也不知道端口是 3000 啊，所以需要`一个代理服务器`
 
 - 正向代理 ：像我们的科学上网就是正向代理便是(某管)
-![20200315133216.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315133216.png)
+  ![20200315133216.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315133216.png)
 - 反向代理：像这种就是反向代理，具体右转`google`
 
 ##### 安装
 
-直接在云服务器通过`yum ` 就可以了我觉得
+直接在云服务器通过`yum` 就可以了我觉得
 
 ```sh
 yum install nginx
@@ -434,17 +434,17 @@ apt update
 apt install nginx
 ```
 
-然后怎么办呢，触及到我的知识盲区了,还是不要慌，遇到问题解决问题。**敢于试错吧** 
+然后怎么办呢，触及到我的知识盲区了,还是不要慌，遇到问题解决问题。**敢于试错吧**
 
 ![20200315133555.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315133555.png)
 
-##### nginx -v 
+##### nginx -v
 
 查看当前云服务安装的`nginx` 版本
 
 ##### nginx -t
 
-查看配置,这很重要，因为它会定位到`nginx的主要配置所在的位置`  ，不同的安装方式所在的位置是不同的以下是笔者的
+查看配置,这很重要，因为它会定位到`nginx的主要配置所在的位置` ，不同的安装方式所在的位置是不同的以下是笔者的
 
 ```sh
 nginx: the configuration file /www/server/nginx/conf/nginx.conf syntax is ok
@@ -452,7 +452,173 @@ nginx: configuration file /www/server/nginx/conf/nginx.conf test is successful
 
 ```
 
+##### cat nginx.conf
 
+查看`nginx` 主要的配置文件，
+
+```sh\
+
+…………………………
+server
+    {
+        listen 888;
+        server_name phpmyadmin;
+        index index.html index.htm index.php;
+        root  /www/server/phpmyadmin;
+
+        #error_page   404   /404.html;
+        include enable-php.conf;
+
+        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+        {
+            expires      30d;
+        }
+
+        location ~ .*\.(js|css)?$
+        {
+            expires      12h;
+        }
+
+        location ~ /\.
+        {
+            deny all;
+        }
+
+        access_log  /www/wwwlogs/access.log;
+    }
+include /www/server/panel/vhost/nginx/*.conf;
+}
+
+```
+
+主要的要看重这句话**include /www/server/panel/vhost/nginx/\*.conf;**
+
+意思是说会引入后缀名`.conf` 的文件作为配置的一部分，所以当我们新增配置的时候，文件名要是`.conf` 这样 nginx 会导入并作为配置
+![20200315185013.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315185013.png)
+
+这时候我们只需要新建一个`**.conf` 的文件就可,添加如下的配置
+
+```sh
+server {
+
+        listen 80;
+        server_name  localhost;
+        location /api {
+            proxy_pass http://127.0.0.1:3000;
+		}
+}
+
+```
+
+我们新增的`nginx` 配置并没有包括
+
+- 静态路由的配置
+- 等等
+
+##### 重启 nginx
+
+```sh
+nginx -s reload
+```
+
+没什么错误的话，应该就可以了， 这个时候验证一下自己的成果
+
+```json
+{
+  "code": 0,
+  "data": {
+    "nickName": "yayxs",
+    "fav": [
+      {
+        "id": 1,
+        "type": "writing"
+      }
+    ]
+  },
+  "msg": "获取用户信息成功"
+}
+```
+
+一个简单的`get` 请求旧简单的部署到`服务器上` 了
+
+#### 构建高可用的 node 环境
+
+在干撸`node` 的时候，如何当进程抛出错误的时候。构建高可用的 node 是十分有必要的**如下的代码可参考阅读，方便理解在服务端的环境下为什么需要 PM2 来管理进程**、
+
+- app.js
+
+```js
+// app.js
+// 引入koa
+const Koa = require("koa");
+// 创建⼀个Koa对象表示web app本身:
+const app = new Koa();
+// 对于任何请求，app将调⽤该异步函数处理请求：
+app.use(async (ctx, next) => {
+  // 随机产⽣错误
+  Math.random() > 0.9 ? yayxs() : "2";
+  await next();
+  ctx.response.type = "text/html";
+  ctx.response.body = "<h1>success</h1>";
+});
+if (!module.parent) {
+  app.listen(3000);
+  console.log("app started at port 3000...");
+} else {
+  module.exports = app;
+}
+```
+
+- test.js
+
+```js
+// test.js
+var http = require("http");
+setInterval(async () => {
+  try {
+    await http.get("http://localhost:3000");
+  } catch (error) {}
+}, 1000);
+```
+
+- cluster.js
+
+```js
+var cluster = require("cluster");
+var os = require("os"); // 获取CPU 的数量
+var numCPUs = os.cpus().length;
+var process = require("process");
+console.log("numCPUs:", numCPUs);
+var workers = {};
+if (cluster.isMaster) {
+  // 主进程分⽀
+  cluster.on("death", function(worker) {
+    // 当⼀个⼯作进程结束时，重启⼯作进程 delete workers[worker.pid];
+    worker = cluster.fork();
+    workers[worker.pid] = worker;
+  });
+  // 初始开启与CPU 数量相同的⼯作进程
+  for (var i = 0; i < numCPUs; i++) {
+    var worker = cluster.fork();
+    workers[worker.pid] = worker;
+  }
+} else {
+  // ⼯作进程分⽀，启动服务器
+  var app = require("./app");
+  app.use(async (ctx, next) => {
+    console.log("worker" + cluster.worker.id + ",PID:" + process.pid);
+    next();
+  });
+  app.listen(3000);
+}
+// 当主进程被终⽌时，关闭所有⼯作进程
+process.on("SIGTERM", function() {
+  for (var pid in workers) {
+    process.kill(pid);
+  }
+  process.exit(0);
+});
+```
 
 ## 其他
 
@@ -461,10 +627,10 @@ nginx: configuration file /www/server/nginx/conf/nginx.conf test is successful
 这一段的时间，上下班的时间一直在想`产品` 的相关的问题，才知道设计一个东西是多么的难，思维很混乱，这也是为什么这么久没更新（当初说好的一周一更呢）。
 
 - 刚开始可能是面向自己，孤独的自己
-- 接着可能会面向B端用户
-- 大众的C端产品
+- 接着可能会面向 B 端用户
+- 大众的 C 端产品
 
-每个人的思路，每个人的共享对于产品的诞生是多么的重要 
+每个人的思路，每个人的共享对于产品的诞生是多么的重要
 
 - 哪怕一个实习生
 - 哪怕一个刚开始企业开发的小生
@@ -474,18 +640,16 @@ nginx: configuration file /www/server/nginx/conf/nginx.conf test is successful
 
 #### 总结
 
-这篇文章包含了两个大的方向`flutter`  与 `node `
+这篇文章包含了两个大的方向`flutter` 与 `node`
 
-- 如何重新出发，构思一个简答的跨端app ,登录页
-- 如何从0 开始搭建一个简单的node后台服务，实现前端人的后端梦
+- 如何重新出发，构思一个简答的跨端 app ,登录页
+- 如何从 0 开始搭建一个简单的 node 后台服务，实现前端人的后端梦
 - 如何入门了解`nginx` 等服务端运维相关的知识，即使皮毛
 
 #### 求求
 
-感觉有意思的也希望一切探讨。完整项目的github 仓库地址[独°](https://github.com/yayxs/flutter-koa2-du)，真的希望能给个`stat`  这也是为什么我重新构思继续开发。
-
-
-
+感觉有意思的也希望一切探讨。完整项目的 github 仓库地址[独 °](https://github.com/yayxs/flutter-koa2-du)，真的希望能给个`stat` 这也是为什么我重新构思继续开发。
+![20200315190644.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315190644.png)
 ### 行文思路
 
 - [vue-element-admin 是一个后台前端解决方案](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
@@ -494,4 +658,4 @@ nginx: configuration file /www/server/nginx/conf/nginx.conf test is successful
 
 - [node 服务开发和服务器部署](https://juejin.im/post/5e5a281be51d4526d059596d)
 - [pm2---node 进程管理工具](https://juejin.im/post/5d26ffeaf265da1b9163bf15)
--
+- 开课吧全栈系列 12 期关于 node 相关分享

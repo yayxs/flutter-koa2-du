@@ -34,7 +34,6 @@ koa2-server // 服务端代码
     - npm 6.13.4
 ```
 
-
 #### 配套文章
 
 在自己开发的过程中，同时`同步更新`专栏文章
@@ -43,4 +42,4 @@ koa2-server // 服务端代码
 2. [Flutter 实战 从头撸一个「孤岛」APP（No.2、闪屏 Splash Page、引导页）](https://juejin.im/post/5dd97d3fe51d45234f582cbe)
 3. [Flutter 实战 从头撸一个「孤岛」APP（No.3、书单、搜索框、Dio 初探）](https://juejin.im/post/5de2b7aa5188256e913c991d)
 4. [Flutter 实战 从头撸一个「孤岛」APP（No.4、流行、点赞、动画）](https://juejin.im/post/5e12943f6fb9a0482806df9d)
-```
+
