@@ -10,17 +10,29 @@
 
 ### 前期须知
 
-这个项目是基于`孤岛」APP`的重新开发，并更换名称`《DU》` ，中文名字《独°》意为`浩瀚宇宙，谁不孤独`,会继续在原有基础开发，并利用`Koa2`开发属于自己的`api` 接口服务
+这个项目是基于`孤岛」APP`的重新开发，并更换名称`《DU》` ，中文名字《独 °》意为`浩瀚宇宙，谁不孤独`,会继续在原有基础开发，并利用`Koa2`开发属于自己的`api` 接口服务
 
 - 客户端：Flutter
 - 服务端：Koa2
 
-### 目录结构
+### 目录结构(master)
 
 ```sh
-
+flutetr_du_app // 客户端代码
+koa2-server // 服务端代码
 ```
 
+### 开发环境
+
+```sh
+ - 客户端
+    - Flutter (Channel stable, v1.12.13+hotfix.8, on Microsoft Windows [Version 10.0.18363.657], locale zh-CN)
+    - Dart version 2.7.0
+    - Android Studio (version 3.5)
+ - 服务端
+    - node v12.16.1
+    - npm 6.13.4
+``
 
 
 #### 配套文章
@@ -31,3 +43,4 @@
 2. [Flutter 实战 从头撸一个「孤岛」APP（No.2、闪屏 Splash Page、引导页）](https://juejin.im/post/5dd97d3fe51d45234f582cbe)
 3. [Flutter 实战 从头撸一个「孤岛」APP（No.3、书单、搜索框、Dio 初探）](https://juejin.im/post/5de2b7aa5188256e913c991d)
 4. [Flutter 实战 从头撸一个「孤岛」APP（No.4、流行、点赞、动画）](https://juejin.im/post/5e12943f6fb9a0482806df9d)
+```

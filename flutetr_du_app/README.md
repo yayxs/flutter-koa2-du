@@ -283,6 +283,9 @@ nodemon app.js
 
 #### 效果
 
+当我们在任何一台有网的电脑上地址栏输入 `http://62.234.111.140/api/v1/user`,便会成功的返回我们所写接口返回的数据
+![20200315132602.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315132602.png)
+
 #### 云服务器准备
 
 为什么说第一步要准备云服务器，因为哪怕你用`原生html` 或者说什什么的`ssr渲染框架` 或者说`jQ`
@@ -322,7 +325,6 @@ npm i -g pm2 // 全局安装线程管理
  // 等等等等
 ```
 
-
 ![20200315124004.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315124004.png)
 
 一切的环境准备好之后，就需要同步一下咱们的服务端代码到`云服务器` 这一点同样十分的重要，不然就没得进行了。
@@ -351,22 +353,22 @@ npm i
 
 不要慌，解决问题
 
-- 问题原因：主要是在同一环境3000这个端口已经被占用
-- 解决问题：那就关闭3000 进程
+- 问题原因：主要是在同一环境 3000 这个端口已经被占用
+- 解决问题：那就关闭 3000 进程
 
 这个时候我们就要引入`PM2` 纯纯的大写的高调的`pm2`
 
-#### Pm2应用
+#### Pm2 应用
 
 首先来看下`pm2` 干些什么
 
-- 内建负载均衡（使⽤Node cluster 集群模块、⼦进程，可以参考朴灵的《深⼊浅出node.js》⼀书 第九章） 
+- 内建负载均衡（使⽤ Node cluster 集群模块、⼦进程，可以参考朴灵的《深⼊浅出 node.js》⼀书 第九章）
 - 线程守护，keep alive
--  0秒停机重载，维护升级的时候不需要停机. 
+- 0 秒停机重载，维护升级的时候不需要停机.
 - 现在 Linux (stable) & MacOSx (stable) & Windows (stable).
-- 多平台⽀持 
+- 多平台⽀持
 - 停⽌不稳定的进程（避免⽆限循环）
--  控制台检测 https://id.keymetrics.io/api/oauth/login#/register 
+- 控制台检测 https://id.keymetrics.io/api/oauth/login#/register
 - 提供 HTTP API
 
 可能现在这样说，也没设好理解的，是有一个这样的场景，云服务器的环境可不像我们本地的电脑，即开发环境（dev），一旦上线，会有各种复杂的问题出现，导致程序崩掉。不能够为我们提供`服务`
@@ -392,11 +394,12 @@ pm2 start app.js -i max # 根据机器CPU核数，开启对应数⽬的进程
 我们可以通过`pm2 list` 查看进程启动情况，显然我们的项目已经在云服务器的`3000`端口启动了,那么这个时候我们把进程`stop all` 停掉
 
 ##### pm2 stop all
+
 ![20200315131034.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315131034.png)
 
-我们通过命令先听到3000端口
+我们通过命令先听到 3000 端口
 
-#### pm2 优雅启动node进程服务
+#### pm2 优雅启动 node 进程服务
 
 ```sh
 pm2 start app.js -i max -n node-koa-pm2
@@ -406,9 +409,82 @@ pm2 start app.js -i max -n node-koa-pm2
 
 #### curl 自行访问测试
 
+```sh
+curl http://127.0.0.1:3000/api/v1/user
+```
+
+![20200315132303.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315132303.png)
+
+#### Nginx 反向代理
+
+是这样的，我们考虑一下，接口访问的时候怎么才优雅，也不知道端口是3000啊，所以需要`一个代理服务器`
+
+- 正向代理 ：像我们的科学上网就是正向代理便是(某管)
+![20200315133216.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315133216.png)
+- 反向代理：像这种就是反向代理，具体右转`google`
+
+##### 安装
+
+直接在云服务器通过`yum ` 就可以了我觉得
+
+```sh
+yum install nginx
+-----
+apt update
+apt install nginx
+```
+
+然后怎么办呢，触及到我的知识盲区了,还是不要慌，遇到问题解决问题。**敢于试错吧** 
+
+![20200315133555.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315133555.png)
+
+##### nginx -v 
+
+查看当前云服务安装的`nginx` 版本
+
+##### nginx -t
+
+查看配置,这很重要，因为它会定位到`nginx的主要配置所在的位置`  ，不同的安装方式所在的位置是不同的以下是笔者的
+
+```sh
+nginx: the configuration file /www/server/nginx/conf/nginx.conf syntax is ok
+nginx: configuration file /www/server/nginx/conf/nginx.conf test is successful
+
+```
+
 
 
 ## 其他
+
+### 近期感想
+
+这一段的时间，上下班的时间一直在想`产品` 的相关的问题，才知道设计一个东西是多么的难，思维很混乱，这也是为什么这么久没更新（当初说好的一周一更呢）。
+
+- 刚开始可能是面向自己，孤独的自己
+- 接着可能会面向B端用户
+- 大众的C端产品
+
+每个人的思路，每个人的共享对于产品的诞生是多么的重要 
+
+- 哪怕一个实习生
+- 哪怕一个刚开始企业开发的小生
+- 哪怕一个宏观架构的大佬
+
+都一样的，唯一不同的是`工资` 不一样的，当个爱好，没事分享分享
+
+#### 总结
+
+这篇文章包含了两个大的方向`flutter`  与 `node `
+
+- 如何重新出发，构思一个简答的跨端app ,登录页
+- 如何从0 开始搭建一个简单的node后台服务，实现前端人的后端梦
+- 如何入门了解`nginx` 等服务端运维相关的知识，即使皮毛
+
+#### 求求
+
+感觉有意思的也希望一切探讨。完整项目的github 仓库地址[独°](https://github.com/yayxs/flutter-koa2-du)，真的希望能给个`stat`  这也是为什么我重新构思继续开发。
+
+
 
 ### 行文思路
 
@@ -418,4 +494,4 @@ pm2 start app.js -i max -n node-koa-pm2
 
 - [node 服务开发和服务器部署](https://juejin.im/post/5e5a281be51d4526d059596d)
 - [pm2---node 进程管理工具](https://juejin.im/post/5d26ffeaf265da1b9163bf15)
-- 
+-
