@@ -18,6 +18,7 @@
 ### 目录结构(master)
 
 ```sh
+docs // 配套文章目录
 flutetr_du_app // 客户端代码
 koa2-server // 服务端代码
 ```
