@@ -27,6 +27,7 @@
 - _下文链接预警_
 - _长文预警_
 - _唠嗑方式不正经预警_
+- 错别字警告
 
 当开始全面更新迭代的时候，没有`产品` 的思维是多么可怕的一件事，开发的过程中会同步更新系列文章，希望一块`撩一撩flutter` **当然了这些文章都是没有更新的**
 
@@ -111,9 +112,7 @@
       - lib/images/login_bg3.jpeg
       - lib/images/login_bg4.jpeg
   ```
-  
-  
-  
+
 - 状态管理：全局状态管理方案（这一点在实际的开发中也是十分必要的）
 
 - 插件：Flutter Provider Snippets **vscode 插件** 类和方法的集合 也规范化`provider` 的书写
@@ -122,12 +121,15 @@
 
 ### 实现效果
 
-实现的效果是底部轮播图，`全屏的滑动`
+实现的效果是底部轮播图，`全屏的滑动`，由于这个效果图，我搞的`gif` 有点大`7,8M` ，放这个图片吧
+
+![20200316231227.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200316231227.png)
 
 ### 目录结构
 
 完全新建一个新的`flutter项目` 删除 main.dart 中的文件先，保留一个整洁的开始，它暂时是这样的
 ![20200316213457.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200316213457.png)
+
 ```dart
 ├─lib
 │  ├─pages
@@ -177,46 +179,118 @@ double mainPicOp = 1; // 透明度
 
 ```dart
 List<String> imgsList; // 背景图轮播的素材列表
+
+imgsList = List<String>(); // 初始化
+imgsList.add('lib/images/login_bg1.jpeg');
+imgsList.add('lib/images/login_bg2.jpeg');
+imgsList.add('lib/images/login_bg3.jpeg');
+imgsList.add('lib/images/login_bg4.jpeg');
+```
+
+```dart
+int mainPicIndex = 0; // 当前正在显示的图片编号
+  int otherPicIndex = 1; // 备胎是1
+```
+
+#### 定时器
+
+需要我们初始化定时器，让图片的透明度切换
+
+```dart
+  Timer dingShiQi; // 定时器
+
+  dingShiQi = Timer.periodic(Duration(seconds: 2), (cb) {
+      bgController.forward(from: 0);
+    });
+```
+
+#### 主要逻辑
+
+```dart
+ if (state == AnimationStatus.completed) {
+          mainPicIndex = mainPicIndex + 1;
+          otherPicIndex = otherPicIndex + 1;
+          if (mainPicIndex == imgsList.length) {
+            mainPicIndex = 0;
+          }
+          if (otherPicIndex == imgsList.length) {
+            otherPicIndex = 0;
+          }
+
+          mainPicOp = 1.0;
+          otherPicOp = 0.0;
+          notifyListeners();
+        }
 ```
 
 
 
+#### 该释放的释放，该取消的取消
+
+```dart
+void dispose() {
+    dingShiQi.cancel();
+    bgController.dispose();
+    super.dispose();
+  }
+```
 
 
-### ui布局
 
-#### 使用provider 
+### ui 布局
 
-拿到`provider`  这样我们在无状态的组件中同样可以来取自如的使用数据
+#### 使用 provider
+
+拿到`provider` 这样我们在无状态的组件中同样可以来取自如的使用数据
 
 ```dart
 LoginProvider provider = Provider.of<LoginProvider>(context);
 ```
 
+#### 核心代码
+
+```dart
+Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
+      ],
+      child: Consumer<LoginProvider>(
+        builder: (context, counter, _) {
+          return MaterialApp(home: LoginPage());
+        },
+      ),
+    );
+  }
+```
+
+上边分享的代码是十分有必要的，因为`provider` 有个一次大的更新就是废除了`build`  然后改成了`create`
+
+- MultiProvider 这是在需要多个 `provider`
+- Consumer 相当于是监听订阅的变化
+
 ### 错误解决
 
-其实在开发的过程中，有错误是十分正常的，也是十分常见的，尤其是在`flutter`  的开发中。更是一些莫名奇妙的问题,
+其实在开发的过程中，有错误是十分正常的，也是十分常见的，尤其是在`flutter` 的开发中。更是一些莫名奇妙的问题,
 
-- 不像web端有`console.log` `console.table `  等等直接可以在控制台打印输出
+- 不像 web 端有`console.log` `console.table` 等等直接可以在控制台打印输出
 
 #### 方案
 
-- 一种有效的方案是世界`flutter run` ,**不要慌，不要怕**  在flutter 的开发中控制台一大大大大长串的错误很是常见
+- 一种有效的方案是世界`flutter run` ,**不要慌，不要怕** 在 flutter 的开发中控制台一大大大大长串的错误很是常见
 - ![20200316215722.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200316215722.png)
 
-主要就是参考`关键字`  常见的关键字 然后出门`google` 也可以推门 [Flutter实际项目开发中踩坑大合集（持续更新..）](https://juejin.im/post/5ddd14ca5188256e8d33c72f)
+主要就是参考`关键字` 常见的关键字 然后出门`google` 也可以推门 [Flutter 实际项目开发中踩坑大合集（持续更新..）](https://juejin.im/post/5ddd14ca5188256e8d33c72f)
 
 - 还有一种方案是 ，利用编辑器的调试工具
 
 ![20200316220335.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200316220335.png)
 
-
-
 像这种一上来就是什么`堆栈溢出` 不过一般情况下，就是咱们的程序写的有问题
 
 ### 小结
 
-本篇章的上半段呢便是对客户端项目的初始化，其中使用到了`动画` 这也是flutter ui 中的核心力量，优雅的渲染能力；还有就是`provider` 在闲鱼的`fish redux` 等等等等一系列的状态管理实践中，当然了，使用哪个都行，但我觉得`provider `  不错。（前提是在用对的情况下）
+本篇章的上半段呢便是对客户端项目的初始化，其中使用到了`动画` 这也是 flutter ui 中的核心力量，优雅的渲染能力；还有就是`provider` 在闲鱼的`fish redux` 等等等等一系列的状态管理实践中，当然了，使用哪个都行，但我觉得`provider` 不错。（前提是在用对的情况下）
 
 #### 实现模块
 
@@ -224,7 +298,7 @@ LoginProvider provider = Provider.of<LoginProvider>(context);
 
 #### 预览
 
-再更新的话，便是，客户端登录，然后请求到公网的数据，至于接口是什么，我想可以继续往下翻一番，感觉文章很随意的话，也请随意的`分享` 一下，**请注明，来源** 
+再更新的话，便是，客户端登录，然后请求到公网的数据，至于接口是什么，我想可以继续往下翻一番，感觉文章很随意的话，也请随意的`分享` 一下，**请注明，来源**
 
 ## Koa2 初始化
 
