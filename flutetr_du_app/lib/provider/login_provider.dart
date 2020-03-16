@@ -28,8 +28,9 @@ class LoginProvider extends State<StatefulWidget>
         AnimationController(vsync: this, duration: Duration(milliseconds: 666));
     bgAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(bgController)
       ..addListener(() {
+        // print(bgAnimation.value);
         mainPicOp = 1.0 - bgAnimation.value;
-        otherPicOp = otherPicOp + bgAnimation.value;
+        otherPicOp =  bgAnimation.value;
         notifyListeners();
       })
       ..addStatusListener((state) {
@@ -43,13 +44,13 @@ class LoginProvider extends State<StatefulWidget>
             otherPicIndex = 0;
           }
 
-          mainPicOp = 1;
-          otherPicOp = 0;
+          mainPicOp = 1.0;
+          otherPicOp = 0.0;
           notifyListeners();
         }
       });
 
-    dingShiQi = Timer.periodic(Duration(seconds: 5), (cb) {
+    dingShiQi = Timer.periodic(Duration(seconds: 2), (cb) {
       bgController.forward(from: 0);
     });
   }

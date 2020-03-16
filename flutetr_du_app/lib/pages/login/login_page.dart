@@ -26,7 +26,7 @@ class BgMainPic extends StatelessWidget {
     return Opacity(
       opacity: provider.mainPicOp,
       child: Image.asset(
-        'lib/images/login_bg${provider.mainPicIndex}.jpeg',
+        'lib/images/login_bg${provider.mainPicIndex + 1}.jpeg',
         fit: BoxFit.cover,
       ),
     );
@@ -42,7 +42,7 @@ class BgOtherPic extends StatelessWidget {
     return Opacity(
       opacity: provider.otherPicOp,
       child: Image.asset(
-        'lib/images/login_bg${provider.otherPicIndex}.jpeg',
+        'lib/images/login_bg${provider.otherPicIndex + 1}.jpeg',
         fit: BoxFit.cover,
       ),
     );
