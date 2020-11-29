@@ -1,17 +1,18 @@
 {
-  "name": "yayxs",
-  "version": "1.0.0",
-  "description": "A project that provides interface APIs for the \"Solo\" app",
-  "main": "app.js",
+  "name": "server",
+  "version": "1.1.1",
+  "description": "server for du",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./src/main"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yayxs/Flutter-Koa2-DU.git"
   },
   "keywords": [
-    "123456"
+    "node",
+    "koa",
+    "koa2"
   ],
   "author": "yayxs",
   "license": "ISC",
@@ -20,8 +21,13 @@
   },
   "homepage": "https://github.com/yayxs/Flutter-Koa2-DU#readme",
   "dependencies": {
-    "koa": "^2.11.0",
-    "koa-router": "^8.0.8",
+    "dotenv": "^8.2.0",
+    "koa": "^2.13.0",
+    "koa-router": "^10.0.0",
+    "mysql2": "^2.2.5",
     "require-directory": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }

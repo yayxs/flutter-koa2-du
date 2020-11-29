@@ -223,8 +223,6 @@ int mainPicIndex = 0; // 当前正在显示的图片编号
         }
 ```
 
-
-
 #### 该释放的释放，该取消的取消
 
 ```dart
@@ -234,8 +232,6 @@ void dispose() {
     super.dispose();
   }
 ```
-
-
 
 ### ui 布局
 
@@ -264,7 +260,7 @@ Widget build(BuildContext context) {
   }
 ```
 
-上边分享的代码是十分有必要的，因为`provider` 有个一次大的更新就是废除了`build`  然后改成了`create`
+上边分享的代码是十分有必要的，因为`provider` 有个一次大的更新就是废除了`build` 然后改成了`create`
 
 - MultiProvider 这是在需要多个 `provider`
 - Consumer 相当于是监听订阅的变化
@@ -414,7 +410,7 @@ var requireDirectory = require('require-directory'),
 
   router.get(`/api/v1/user`, (ctx, next) => {
     ctx.body = {
-      code: 0
+      code: 0,
     };
   });
   module.exports = router;
@@ -795,7 +791,7 @@ console.log("numCPUs:", numCPUs);
 var workers = {};
 if (cluster.isMaster) {
   // 主进程分⽀
-  cluster.on("death", function(worker) {
+  cluster.on("death", function (worker) {
     // 当⼀个⼯作进程结束时，重启⼯作进程 delete workers[worker.pid];
     worker = cluster.fork();
     workers[worker.pid] = worker;
@@ -815,7 +811,7 @@ if (cluster.isMaster) {
   app.listen(3000);
 }
 // 当主进程被终⽌时，关闭所有⼯作进程
-process.on("SIGTERM", function() {
+process.on("SIGTERM", function () {
   for (var pid in workers) {
     process.kill(pid);
   }
@@ -854,13 +850,3 @@ process.on("SIGTERM", function() {
 感觉有意思的也希望一切探讨。完整项目的 github 仓库地址[独 °](https://github.com/yayxs/flutter-koa2-du)，真的希望能给个`stat` 这也是为什么我重新构思继续开发。
 ![20200315190644.png](https://raw.githubusercontent.com/yayxs/Pics/master/img/20200315190644.png)
 
-### 行文思路
-
-- [vue-element-admin 是一个后台前端解决方案](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
-
-### 参考阅读
-
-- [node 服务开发和服务器部署](https://juejin.im/post/5e5a281be51d4526d059596d)
-- [pm2---node 进程管理工具](https://juejin.im/post/5d26ffeaf265da1b9163bf15)
-- 开课吧全栈系列 12 期关于 node 相关分享
-- B 站 马有发 发哥的 flutter 相关分享
